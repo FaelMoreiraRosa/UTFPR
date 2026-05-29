@@ -1,0 +1,107 @@
+<%- include('../partials/header') %>
+
+<main class="container flex-grow-1 py-5">
+    <div class="card shadow-sm border-0 mb-4" style="overflow: hidden;">
+        <div class="row g-0">
+            <div class="col-md-5 bg-light">
+                <% if (receita.imagem) { %>
+                    <img src="/uploads/<%= receita.imagem %>" alt="Foto de <%= receita.nome %>" class="img-fluid w-100 h-100" style="object-fit: cover; min-height: 300px;">
+                <% } else { %>
+                    <img src="/img/receita-padrao.jpg" alt="Sem foto" class="img-fluid w-100 h-100" style="object-fit: cover; min-height: 300px;">
+                <% } %>
+            </div>
+
+            <div class="col-md-7">
+                <div class="card-body p-4 p-lg-5">
+                    <h1 class="display-6 fw-bold mb-3 text-dark"><%= receita.nome %></h1>
+
+                    <div class="mb-3">
+                        <% const cats = receita.Categorias || receita.Categoria || []; %>
+                        <% if (cats.length > 0) { %>
+                            <% cats.forEach(categoria => { %>
+                                <span class="badge text-dark fs-6 me-1 mb-1" style="background-color: #F7D488;"><%= categoria.nome %></span>
+                            <% }) %>
+                        <% } else { %>
+                            <span class="badge text-dark fs-6" style="background-color: #F7D488;">Sem categoria</span>
+                        <% } %>
+                    </div>
+
+                    <p class="lead mb-4"><%= receita.descricao %></p>
+
+                    <% if (receita.linkExterno) { %>
+                        <p class="mb-4">
+                            <a href="<%= receita.linkExterno %>" target="_blank" rel="noopener noreferrer" class="btn btn-borda-laranja">
+                                Abrir link externo
+                            </a>
+                        </p>
+                    <% } %>
+
+                    <p class="text-muted mb-4 border-bottom pb-3">
+                        <strong>Feito por:</strong>
+                        <% if (receita.Alunos && receita.Alunos.length > 0) { %>
+                            <%= receita.Alunos.map(a => a.ReceitaAluno && a.ReceitaAluno.criador ? `${a.nome} (criador)` : a.nome).join(', ') %>
+                        <% } else { %>
+                            Autor desconhecido
+                        <% } %>
+                    </p>
+
+                    <h2 class="h5 fw-bold mt-4 mb-3">Ingredientes:</h2>
+                    <div class="p-3 mb-4 rounded shadow-sm" style="background-color: #fcf8f2; border-left: 5px solid #F7D488;">
+                        <p class="mb-0" style="white-space: pre-wrap; font-family: inherit;"><%= receita.ingredientes %></p>
+                    </div>
+
+                    <h2 class="h5 fw-bold mb-3">Modo de Preparo:</h2>
+                    <div class="p-3 mb-4 rounded shadow-sm bg-light">
+                        <p class="mb-0" style="white-space: pre-wrap; font-family: inherit;"><%= receita.modoPreparo %></p>
+                    </div>
+
+                    <a href="/" class="btn btn-laranja fw-bold px-4">Voltar para a página inicial</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="row g-4">
+        <div class="col-12 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-header fw-bold" style="background-color: #F7D488;">Comentar receita</div>
+                <div class="card-body">
+                    <form action="/receita/<%= receita.id %>/comentarios" method="POST">
+                        <div class="mb-3">
+                            <label for="nomeAutor" class="form-label fw-bold">Seu nome</label>
+                            <input type="text" class="form-control" id="nomeAutor" name="nomeAutor" required maxlength="80">
+                        </div>
+                        <div class="mb-3">
+                            <label for="texto" class="form-label fw-bold">Comentário</label>
+                            <textarea class="form-control" id="texto" name="texto" rows="4" required maxlength="1000"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-laranja fw-bold">Enviar comentário</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header fw-bold" style="background-color: #F7D488;">Comentários</div>
+                <ul class="list-group list-group-flush">
+                    <% if (typeof comentarios !== 'undefined' && comentarios.length > 0) { %>
+                        <% comentarios.forEach(comentario => { %>
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between gap-3">
+                                    <strong><%= comentario.nomeAutor %></strong>
+                                    <small class="text-muted"><%= comentario.createdAt.toLocaleDateString('pt-BR') %></small>
+                                </div>
+                                <p class="mb-0 mt-2"><%= comentario.texto %></p>
+                            </li>
+                        <% }) %>
+                    <% } else { %>
+                        <li class="list-group-item text-muted">Nenhum comentário cadastrado ainda.</li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('../partials/footer') %>

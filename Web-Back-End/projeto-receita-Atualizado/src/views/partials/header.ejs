@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Portfólio de Receitas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    #email, #senha, .list-group-item, .card, .soft, .bg-white {
+        background-color: #fff7e6;
+    }
+
+    .btn-borda-laranja {
+        border: 1px solid #e58d32;
+        color: #e58d32;
+    }
+
+    .btn-borda-laranja:hover {
+        background-color: #e58d32;
+        color: white;
+    }
+
+    .btn-laranja {
+        background-color: #F9A03F;
+        border-color: #F9A03F;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .btn-laranja:hover {
+        background-color: #e58d32;
+        border-color: #e58d32;
+        color: white;
+    }
+
+    .table-orange th,
+    .table-orange {
+        background-color: #e58d32 !important;
+        color: white !important;
+    }
+</style>
+
+<body class="d-flex flex-column min-vh-100" style="background-color: #ffecc2;">
+    <nav class="navbar navbar-expand-lg" style="font-size: 2vh; background-color: #F7D488;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo2.png" alt="Logo" width="40" height="40" class="d-inline-block align-text-top" style="object-fit: cover; border-radius: 5px;">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav align-items-center">
+                    <a class="nav-link" href="/">Página Inicial</a>
+                    <a class="nav-link" href="/relatorio/habilidades">Relatório de Habilidades</a>
+
+                    <% if (usuarioLogado) { %>
+                        <% if (usuarioLogado.isAdmin) { %>
+                            <a class="nav-link" href="/admin/dashboard">Painel Admin</a>
+                        <% } else { %>
+                            <a class="nav-link" href="/aluno/painel">Meu Painel</a>
+                        <% } %>
+                        <span class="nav-link fw-bold ms-2 me-2">Olá, <%= usuarioLogado.nome %></span>
+                        <a class="nav-link text-danger" href="/logout">Sair</a>
+                    <% } else { %>
+                        <a class="nav-link" href="/login">Fazer Login</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </nav>

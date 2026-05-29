@@ -1,0 +1,77 @@
+<%- include('../partials/header') %>
+
+<main class="container flex-grow-1 py-4 d-flex justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="card shadow-sm" style="border-color: #F7D488;">
+            <div class="card-header fs-4 fw-bold text-center" style="background-color: #F7D488;">
+                Cadastrar Nova Receita
+            </div>
+
+            <div class="card-body p-4">
+                <form action="/aluno/receita/nova" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label fw-bold">Nome da Receita:</label>
+                        <input type="text" class="form-control" id="nome" name="nome" required placeholder="Ex: Bolo de Cenoura">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label fw-bold">Breve Descrição:</label>
+                        <input type="text" class="form-control" id="descricao" name="descricao" required placeholder="Ex: Um bolo fofinho com cobertura de chocolate.">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="linkExterno" class="form-label fw-bold">Link externo:</label>
+                        <input type="url" class="form-control" id="linkExterno" name="linkExterno" placeholder="https://exemplo.com/receita">
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label for="imagem" class="form-label fw-bold">Foto da Receita:</label>
+                            <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="categoriaId" class="form-label fw-bold">Categorias:</label>
+                            <select class="form-select" id="categoriaId" name="categoriaId" multiple required size="5">
+                                <% categorias.forEach(categoria => { %>
+                                    <option value="<%= categoria.id %>"><%= categoria.nome %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Coautores:</label>
+                        <div class="border rounded p-3" style="max-height: 150px; overflow-y: auto; background-color: #f8f9fa;">
+                            <% alunos.forEach(aluno => { %>
+                                <% if (aluno.id !== usuarioLogado.id) { %>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="coautores" value="<%= aluno.id %>" id="aluno_<%= aluno.id %>">
+                                        <label class="form-check-label" for="aluno_<%= aluno.id %>"><%= aluno.nome %></label>
+                                    </div>
+                                <% } %>
+                            <% }) %>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ingredientes" class="form-label fw-bold">Ingredientes:</label>
+                        <textarea class="form-control" id="ingredientes" name="ingredientes" rows="4" required placeholder="Liste os ingredientes..."></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="modoPreparo" class="form-label fw-bold">Modo de Preparo:</label>
+                        <textarea class="form-control" id="modoPreparo" name="modoPreparo" rows="5" required placeholder="Explique o passo a passo..."></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="/aluno/painel" class="btn btn-outline-secondary fw-bold">Cancelar</a>
+                        <button type="submit" class="btn btn-laranja fw-bold">Salvar Receita</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('../partials/footer') %>

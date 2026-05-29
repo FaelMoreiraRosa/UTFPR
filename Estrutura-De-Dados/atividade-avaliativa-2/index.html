@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Apresentação: Lista Circular</title>
+    <script src="./listaCircular.js" defer></script>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f0f2f5;
+            padding: 30px;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Painel de Controle: Lista Circular</h2>
+
+    <div class="bloco">
+        <h3>1. Inserir Elemento</h3>
+        <input type="text" id="inputInserir" placeholder="Ex: Tarefa A">
+        <button onclick="dispararInserir()">Inserir</button>
+    </div>
+
+    <div class="bloco">
+        <h3>2. Percorrer Lista</h3>
+        <button class="btn-percorrer" onclick="dispararPercorrer()">Mostrar Lista no Console</button>
+    </div>
+
+    <div class="bloco">
+        <h3>3. Editar Elemento</h3>
+        <input type="text" id="inputAntigo" placeholder="Valor atual">
+        <input type="text" id="inputNovo" placeholder="Novo valor">
+        <button onclick="dispararEditar()">Editar</button>
+    </div>
+
+    <div class="bloco">
+        <h3>4. Excluir Elemento</h3>
+        <input type="text" id="inputExcluir" placeholder="Ex: Tarefa A">
+        <button class="btn-excluir" onclick="dispararExcluir()">Excluir</button>
+    </div>
+</div>
+
+</body>
+</html>

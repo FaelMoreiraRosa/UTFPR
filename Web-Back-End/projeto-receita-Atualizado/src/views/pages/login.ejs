@@ -1,0 +1,37 @@
+<%- include('../partials/header') %>
+
+<main class="container flex-grow-1 d-flex flex-column justify-content-center py-4">
+
+    <div class="row justify-content-center">
+        
+        <div class="col-12 col-md-6 col-lg-4">
+            
+            <div class="card shadow-sm" style="background-color: #F7D488; border: none;">
+                <div class="card-body p-4"> <h2 class="text-center mb-4">Fazer Login</h2>
+                    
+                    <form action="/login" method="POST">
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-bold">E-mail:</label>
+                            <input type="email" class="form-control" id="email" name="email" required
+                                placeholder="Digite seu e-mail">
+                        </div>
+                        <div class="mb-4">
+                            <label for="senha" class="form-label fw-bold">Senha:</label>
+                            <input type="password" class="form-control" id="senha" name="senha" required
+                                placeholder="Digite sua senha">
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-laranja fw-bold" btn-laranja>Entrar</button>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+<%- include('../partials/footer') %>

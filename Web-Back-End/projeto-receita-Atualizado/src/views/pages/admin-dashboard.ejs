@@ -1,0 +1,212 @@
+<%- include('../partials/header') %>
+
+<main class="container flex-grow-1 py-4">
+    <div class="mb-4 pb-3 border-bottom">
+        <h1 class="mb-1">Painel do Administrador</h1>
+        <p class="text-muted fs-5 mb-0">Bem-vindo, <strong><%= usuarioLogado.nome %></strong>!</p>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-12 col-lg-4">
+            <div class="card shadow-sm h-100" style="border-color: #F7D488;">
+                <div class="card-header fs-5 fw-bold text-center" style="background-color: #F7D488;">Nova Categoria</div>
+                <div class="card-body p-4">
+                    <form action="/admin/categoria/nova" method="POST">
+                        <label for="nomeCategoria" class="form-label fw-bold">Nome da Categoria:</label>
+                        <input type="text" class="form-control mb-3" id="nomeCategoria" name="nome" required placeholder="Ex: Sobremesa">
+                        <button type="submit" class="btn btn-laranja fw-bold w-100">Salvar Categoria</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card shadow-sm h-100" style="border-color: #F7D488;">
+                <div class="card-header fs-5 fw-bold text-center" style="background-color: #F7D488;">Nova Habilidade</div>
+                <div class="card-body p-4">
+                    <form action="/admin/habilidade/nova" method="POST">
+                        <label for="nomeHabilidade" class="form-label fw-bold">Nome da Habilidade:</label>
+                        <input type="text" class="form-control mb-3" id="nomeHabilidade" name="nome" required placeholder="Ex: Confeitaria">
+                        <button type="submit" class="btn btn-laranja fw-bold w-100">Salvar Habilidade</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card shadow-sm h-100" style="border-color: #F7D488;">
+                <div class="card-header fs-5 fw-bold text-center" style="background-color: #F7D488;">Novo Aluno</div>
+                <div class="card-body p-4">
+                    <form action="/admin/aluno/novo" method="POST">
+                        <label for="nomeAluno" class="form-label fw-bold">Nome Completo:</label>
+                        <input type="text" class="form-control mb-3" id="nomeAluno" name="nome" required>
+                        <label for="emailAluno" class="form-label fw-bold">Email:</label>
+                        <input type="email" class="form-control mb-3" id="emailAluno" name="email" required>
+                        <label for="senhaAluno" class="form-label fw-bold">Senha Inicial:</label>
+                        <input type="password" class="form-control mb-3" id="senhaAluno" name="senha" required>
+                        <button type="submit" class="btn btn-laranja fw-bold w-100">Cadastrar Aluno</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="h4 border-bottom pb-2 mb-3">Gestão de Registros</h2>
+
+    <ul class="nav nav-tabs border-bottom-0" id="adminTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-bold" id="alunos-tab" data-bs-toggle="tab" data-bs-target="#alunos" type="button" role="tab">Alunos</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold" id="receitas-tab" data-bs-toggle="tab" data-bs-target="#receitas" type="button" role="tab">Receitas</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold" id="habilidades-tab" data-bs-toggle="tab" data-bs-target="#habilidades" type="button" role="tab">Habilidades</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold" id="categorias-tab" data-bs-toggle="tab" data-bs-target="#categorias" type="button" role="tab">Categorias</button>
+        </li>
+    </ul>
+
+    <div class="tab-content border p-3 shadow-sm mb-5 rounded-bottom rounded-end" id="adminTabsContent" style="background-color: #F7D488; border-color: #F9A03F !important;">
+        <div class="tab-pane fade show active" id="alunos" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-orange">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Senha nova</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (alunos.length > 0) { %>
+                            <% alunos.forEach(aluno => { %>
+                                <tr>
+                                    <td><%= aluno.id %></td>
+                                    <td><input form="editar-aluno-<%= aluno.id %>" type="text" class="form-control form-control-sm" name="nome" value="<%= aluno.nome %>" required></td>
+                                    <td><input form="editar-aluno-<%= aluno.id %>" type="email" class="form-control form-control-sm" name="email" value="<%= aluno.email %>" required></td>
+                                    <td><input form="editar-aluno-<%= aluno.id %>" type="password" class="form-control form-control-sm" name="senha" placeholder="Manter senha"></td>
+                                    <td class="text-end">
+                                        <form id="editar-aluno-<%= aluno.id %>" action="/admin/aluno/editar/<%= aluno.id %>" method="POST" class="d-inline"></form>
+                                        <button form="editar-aluno-<%= aluno.id %>" type="submit" class="btn btn-sm btn-borda-laranja">Salvar</button>
+                                        <% if (!aluno.isAdmin) { %>
+                                            <form action="/admin/aluno/excluir/<%= aluno.id %>" method="POST" class="d-inline" onsubmit="return confirm('Excluir este aluno?');">
+                                                <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                            </form>
+                                        <% } else { %>
+                                            <span class="badge bg-secondary">Admin protegido</span>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr><td colspan="5" class="text-center text-muted">Nenhum aluno cadastrado.</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="receitas" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-orange">
+                        <tr>
+                            <th>ID</th>
+                            <th>Título da Receita</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (receitas.length > 0) { %>
+                            <% receitas.forEach(receita => { %>
+                                <tr>
+                                    <td><%= receita.id %></td>
+                                    <td><%= receita.nome %></td>
+                                    <td class="text-end">
+                                        <form action="/admin/receita/excluir/<%= receita.id %>" method="POST" class="d-inline" onsubmit="return confirm('Excluir esta receita?');">
+                                            <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr><td colspan="3" class="text-center text-muted">Nenhuma receita cadastrada.</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="habilidades" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-orange">
+                        <tr>
+                            <th>ID</th>
+                            <th>Habilidade</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (habilidades.length > 0) { %>
+                            <% habilidades.forEach(hab => { %>
+                                <tr>
+                                    <td><%= hab.id %></td>
+                                    <td><input form="editar-habilidade-<%= hab.id %>" type="text" class="form-control form-control-sm" name="nome" value="<%= hab.nome %>" required></td>
+                                    <td class="text-end">
+                                        <form id="editar-habilidade-<%= hab.id %>" action="/admin/habilidade/editar/<%= hab.id %>" method="POST" class="d-inline"></form>
+                                        <button form="editar-habilidade-<%= hab.id %>" type="submit" class="btn btn-sm btn-borda-laranja">Salvar</button>
+                                        <form action="/admin/habilidade/excluir/<%= hab.id %>" method="POST" class="d-inline" onsubmit="return confirm('Excluir esta habilidade?');">
+                                            <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr><td colspan="3" class="text-center text-muted">Nenhuma habilidade cadastrada.</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="categorias" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-orange">
+                        <tr>
+                            <th>ID</th>
+                            <th>Categoria</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (categorias.length > 0) { %>
+                            <% categorias.forEach(cat => { %>
+                                <tr>
+                                    <td><%= cat.id %></td>
+                                    <td><input form="editar-categoria-<%= cat.id %>" type="text" class="form-control form-control-sm" name="nome" value="<%= cat.nome %>" required></td>
+                                    <td class="text-end">
+                                        <form id="editar-categoria-<%= cat.id %>" action="/admin/categoria/editar/<%= cat.id %>" method="POST" class="d-inline"></form>
+                                        <button form="editar-categoria-<%= cat.id %>" type="submit" class="btn btn-sm btn-borda-laranja">Salvar</button>
+                                        <form action="/admin/categoria/excluir/<%= cat.id %>" method="POST" class="d-inline" onsubmit="return confirm('Excluir esta categoria?');">
+                                            <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr><td colspan="3" class="text-center text-muted">Nenhuma categoria cadastrada.</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('../partials/footer') %>

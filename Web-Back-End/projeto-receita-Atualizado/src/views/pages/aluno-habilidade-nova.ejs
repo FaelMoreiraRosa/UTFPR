@@ -1,0 +1,46 @@
+<%- include('../partials/header') %>
+
+<main class="container flex-grow-1 py-4 d-flex justify-content-center align-items-center">
+    <div class="col-12 col-md-6 col-lg-5">
+        <div class="card shadow-sm" style="border-color: #F7D488;">
+            <div class="card-header fs-4 fw-bold text-center" style="background-color: #F7D488;">
+                Adicionar Habilidade
+            </div>
+
+            <div class="card-body p-4">
+                <form action="/aluno/habilidade/nova" method="POST">
+                    <div class="mb-4">
+                        <label for="habilidadeId" class="form-label fw-bold">Selecione a Habilidade:</label>
+                        <select class="form-select" id="habilidadeId" name="habilidadeId" required>
+                            <option value="">Escolha uma habilidade...</option>
+                            <% if (typeof habilidades !== 'undefined' && habilidades.length > 0) { %>
+                                <% habilidades.forEach(habilidade => { %>
+                                    <option value="<%= habilidade.id %>"><%= habilidade.nome %></option>
+                                <% }) %>
+                            <% } else { %>
+                                <option value="">Nenhuma habilidade cadastrada pelo Admin.</option>
+                            <% } %>
+                        </select>
+                        <div class="form-text">As habilidades são definidas pelos professores.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="nivel" class="form-label fw-bold">Seu Nível (0 a 10):</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="nivel" name="nivel" min="0" max="10" required placeholder="Ex: 8">
+                            <span class="input-group-text">/ 10</span>
+                        </div>
+                        <div class="form-text">Sendo 0 para iniciante e 10 para expert.</div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-laranja fw-bold">Salvar Habilidade</button>
+                        <a href="/aluno/painel" class="btn btn-outline-secondary fw-bold">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('../partials/footer') %>
